@@ -1,0 +1,20 @@
+2Db - 2St = P
+2Df + 2St = P 
+
+Db = P / 2 + St
+Df = P / 2 - St
+
+-----------
+
+Speed = c/8
+P = 2000
+St = 250 
+
+Db = 1250
+Df = 750
+
+-----------
+
+Stream constant at Gen_Step = D * 2
+
+Check X,Y @ Gen = N * (D * 2)
