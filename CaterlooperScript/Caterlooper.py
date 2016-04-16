@@ -73,8 +73,8 @@ def PlaceReadingHeads(hwssRecipe):
 		
 		
 def FindWssByDirection(isUp, modY):
-	wssList = pickle.load(open("WssData.pkl"),"rb")
-	wssLaneList = pickle.load(open("WssLaneData.pkl"),"rb")
+	wssList = pickle.load(open("WssData.pkl","rb"))
+	wssLaneList = pickle.load(open("WssLaneData.pkl","rb"))
 	
 	dy = 0
 	if isUp:
@@ -590,7 +590,8 @@ g.fit()
 g.update()
 AdaptiveGoto(recipes.recipe)
 
-g.run(4 * distBack * period / step)
+gen = int(g.getgen())
+GotoLimited(gen + 4 * distBack * period / step, 4)
 
 while int(g.getgen()) % 4 != (4 - dgen) % 4:	
 	g.run(1)
