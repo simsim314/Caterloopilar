@@ -73,8 +73,8 @@ def PlaceReadingHeads(hwssRecipe):
 		
 		
 def FindWssByDirection(isUp, modY):
-	wssList = pickle.load(open(path.join(g.getdir("data"),"WssData.pkl"),"rb") )
-	wssLaneList = pickle.load(open(path.join(g.getdir("data"),"WssLaneData.pkl"),"rb") )
+	wssList = pickle.load(open("WssData.pkl"),"rb")
+	wssLaneList = pickle.load(open("WssLaneData.pkl"),"rb")
 	
 	dy = 0
 	if isUp:
