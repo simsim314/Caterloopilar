@@ -15,7 +15,10 @@ class RecipeConstructor(object):
 		self.BlockMoveTableEven = {}
 		self.BlockMoveTableOdd = {}
 		self.WssCreator = []
-	
+		self.minD = 0
+		self.maxY = 0
+		self.maxX = 0
+		
 	def Reset(self):
 		self.blockX = 0
 		self.blockY = 0
@@ -40,6 +43,38 @@ class RecipeConstructor(object):
 		dx = x - self.blockX
 		dy = y - self.blockY
 		
+		#g.note(str((x, y,  self.blockX,  self.blockY, dx, dy)))
+		
+		if dx >= self.minD and dx <= self.maxX and abs(dy) <= self.maxY:
+			
+			d = min(-3, dx)
+			self.MoveBy(d, dx, dy)
+			
+		else: 
+			
+			if dy != 0:
+				dx_dy = int(self.maxY * float(dx) / float(abs(dy)) + 0.5)
+			else:
+				dx_dy = 0 
+				
+			if dy != 0 and abs(dy) > self.maxY and dx_dy <= self.maxX and dx_dy >= self.minD:
+			
+				d = min(-3, dx_dy)
+				self.MoveBy(d, dx_dy, self.maxY * (dy / abs(dy)))
+				self.Goto(x, y)
+				
+			elif dx < self.minD:
+				
+				dy_dx = int(self.minD * float(dy) / float(dx) + 0.5)
+				self.MoveBy(self.minD, self.minD, dy_dx)
+				self.Goto(x, y)
+			
+			elif dx > self.maxX:
+				
+				dy_dx = int(self.maxX * float(dy) / float(dx) + 0.5)
+				self.MoveBy(-3, self.maxX, dy_dx)
+				self.Goto(x, y)
+			'''
 		if dx < -26:
 			if dy >= 101:
 				self.MoveBy(-23, -23, 101)
@@ -101,7 +136,7 @@ class RecipeConstructor(object):
 			else: 
 				self.MoveBy(-3, 50, 0)
 				self.Goto(x, y)
-	
+	'''
 	def DeleteBlock(self):
 		delta = self.blockY - self.blockX
 		
@@ -151,6 +186,11 @@ class RecipeConstructor(object):
 			x = int(vals[0][1])
 			y = int(vals[0][2])
 			
+			self.minD = min(self.minD, d)
+			self.maxY = max(self.maxY, abs(y))
+			self.maxX = max(self.maxX, x)
+			
+			
 			vals[1] = vals[1].replace("E", "").replace("\n", "").replace(" ", "")
 			vals[1] = vals[1].split(",")
 			
@@ -164,6 +204,8 @@ class RecipeConstructor(object):
 				self.BlockMoveTableOdd[(d, x, y)] = vals[1]
 			
 		ins.close()
+		self.maxY -= 2
+		self.maxX -= 1
 		
 	def LoadWssTable(self, path):
 		ins = open(path, "r" )
